@@ -1,0 +1,13 @@
+{
+    "AppSyncApiName": "recipeAPI",
+    "DynamoDBBillingMode": "PAY_PER_REQUEST",
+    "DynamoDBEnableServerSideEncryption": false,
+    "AuthCognitoUserPoolId": {
+        "Fn::GetAtt": [
+            "authrecipeapp",
+            "Outputs.UserPoolId"
+        ]
+    },
+    "S3DeploymentBucket": "amplify-recipeapp-staging-172953-deployment",
+    "S3DeploymentRootKey": "amplify-appsync-files/fecddb4fc7b7abd9ca2ab4a8d0e81bbdd6158b3e"
+}

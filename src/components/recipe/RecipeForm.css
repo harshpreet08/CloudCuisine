@@ -1,0 +1,79 @@
+.RecipeForm {
+  width: 100%;
+  min-height: calc(
+    100vh - 54px
+  ); /* Adjusted to consider the height of the navbar */
+  display: flex;
+  flex-direction: column;
+  padding-top: 40px; /* Added padding to create space below the navbar */
+}
+
+.user-info {
+  text-align: right;
+}
+
+.username {
+  font-weight: bold;
+}
+
+.main {
+  flex-grow: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.content {
+  text-align: center;
+}
+
+.add-recipe-form {
+  width: 70%;
+  max-width: 600px;
+  margin: 20px auto;
+  padding: 0; /* Remove padding */
+  border: none; /* Remove border */
+  background-color: #fff;
+}
+
+.form-group {
+  margin-bottom: 20px; /* Add space between form groups */
+}
+
+input,
+textarea {
+  width: 100%; /* Make inputs and textareas full width */
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.submitbtn {
+  width: 100%; /* Make button full width */
+  padding: 10px;
+  background-color: #3b457d;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #2c3e50; /* Darken button color on hover */
+}
+
+.image-container {
+  margin-top: 50px;
+}
+
+.image-container img {
+  max-width: 100%;
+  height: auto;
+}
+
+footer {
+  background-color: #f0f0f0;
+  padding: 20px;
+  text-align: center;
+  color: #555;
+}

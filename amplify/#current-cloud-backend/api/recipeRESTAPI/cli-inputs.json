@@ -1,0 +1,12 @@
+{
+  "version": 1,
+  "paths": {
+    "/sendmyrecipe": {
+      "name": "/sendmyrecipe",
+      "lambdaFunction": "recipelambda",
+      "permissions": {
+        "setting": "open"
+      }
+    }
+  }
+}

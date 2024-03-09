@@ -1,0 +1,182 @@
+{
+  "providers": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-recipeapp-staging-172953-authRole",
+      "UnauthRoleArn": "arn:aws:iam::982120985546:role/amplify-recipeapp-staging-172953-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::982120985546:role/amplify-recipeapp-staging-172953-authRole",
+      "Region": "us-east-1",
+      "DeploymentBucketName": "amplify-recipeapp-staging-172953-deployment",
+      "UnauthRoleName": "amplify-recipeapp-staging-172953-unauthRole",
+      "StackName": "amplify-recipeapp-staging-172953",
+      "StackId": "arn:aws:cloudformation:us-east-1:982120985546:stack/amplify-recipeapp-staging-172953/ad0ac4e0-c1f0-11ee-9500-0a598cdf7063",
+      "AmplifyAppId": "d2brvp81eu4bp"
+    }
+  },
+  "auth": {
+    "recipeapp": {
+      "service": "Cognito",
+      "providerPlugin": "awscloudformation",
+      "dependsOn": [],
+      "customAuth": false,
+      "frontendAuthConfig": {
+        "socialProviders": [
+          "GOOGLE"
+        ],
+        "usernameAttributes": [
+          "EMAIL"
+        ],
+        "signupAttributes": [
+          "EMAIL",
+          "PICTURE"
+        ],
+        "passwordProtectionSettings": {
+          "passwordPolicyMinLength": 8,
+          "passwordPolicyCharacters": [
+            "REQUIRES_LOWERCASE",
+            "REQUIRES_NUMBERS",
+            "REQUIRES_SYMBOLS",
+            "REQUIRES_UPPERCASE"
+          ]
+        },
+        "mfaConfiguration": "OFF",
+        "mfaTypes": [
+          "SMS"
+        ],
+        "verificationMechanisms": [
+          "EMAIL"
+        ]
+      },
+      "providerMetadata": {
+        "s3TemplateURL": "https://s3.amazonaws.com/amplify-recipeapp-staging-172953-deployment/amplify-cfn-templates/auth/recipeapp-cloudformation-template.json",
+        "logicalId": "authrecipeapp"
+      },
+      "lastPushTimeStamp": "2024-02-09T19:49:01.361Z",
+      "output": {
+        "UserPoolId": "us-east-1_oLGTWb6Iz",
+        "AppClientIDWeb": "4o4asb5l9cu9cipv6jbo179ekj",
+        "AppClientID": "41a3dv63lc76cm7j4i52g1l0ko",
+        "HostedUIDomain": "lil1ihd7fees-staging",
+        "IdentityPoolId": "us-east-1:e5da2d19-1dfc-46d6-a441-790abdea39fc",
+        "UserPoolArn": "arn:aws:cognito-idp:us-east-1:982120985546:userpool/us-east-1_oLGTWb6Iz",
+        "IdentityPoolName": "testAuthIdentityPool__staging",
+        "OAuthMetadata": "{\"AllowedOAuthFlows\":[\"code\"],\"AllowedOAuthScopes\":[\"phone\",\"email\",\"openid\",\"profile\",\"aws.cognito.signin.user.admin\"],\"CallbackURLs\":[\"http://localhost:5173/\"],\"LogoutURLs\":[\"http://localhost:5173/\"]}",
+        "UserPoolName": "recipeapp"
+      },
+      "lastPushDirHash": "XLxZL45aLsnEk9N/Oj8g+uegERw="
+    }
+  },
+  "api": {
+    "recipeAPI": {
+      "service": "AppSync",
+      "providerPlugin": "awscloudformation",
+      "dependsOn": [
+        {
+          "attributes": [
+            "UserPoolId"
+          ],
+          "category": "auth",
+          "resourceName": "recipeapp"
+        }
+      ],
+      "output": {
+        "authConfig": {
+          "defaultAuthentication": {
+            "authenticationType": "AMAZON_COGNITO_USER_POOLS",
+            "userPoolConfig": {
+              "userPoolId": "authrecipeapp"
+            }
+          },
+          "additionalAuthenticationProviders": [
+            {
+              "authenticationType": "API_KEY",
+              "apiKeyConfig": {
+                "apiKeyExpirationDays": 365,
+                "apiKeyExpirationDate": "2025-02-02T17:44:02.826Z",
+                "description": "graphql api for recipes"
+              }
+            }
+          ]
+        },
+        "GraphQLAPIIdOutput": "6yrln3ptsfhmllfgjeylda5u5q",
+        "GraphQLAPIEndpointOutput": "https://cmh3xhph45hqjnymkdaqa2f2ii.appsync-api.us-east-1.amazonaws.com/graphql",
+        "GraphQLAPIKeyOutput": "da2-7or7cbtcg5arxlo7p3tspnpcpa"
+      },
+      "lastPushTimeStamp": "2024-02-09T19:49:01.365Z",
+      "providerMetadata": {
+        "s3TemplateURL": "https://s3.amazonaws.com/amplify-recipeapp-staging-172953-deployment/amplify-cfn-templates/api/cloudformation-template.json",
+        "logicalId": "apirecipeAPI"
+      },
+      "lastPushDirHash": "JnauGz51fF2pBjeJg9xdFjVVW44="
+    },
+    "recipeRESTAPI": {
+      "service": "API Gateway",
+      "providerPlugin": "awscloudformation",
+      "dependsOn": [
+        {
+          "category": "function",
+          "resourceName": "recipelambda",
+          "attributes": [
+            "Name",
+            "Arn"
+          ]
+        }
+      ],
+      "providerMetadata": {
+        "s3TemplateURL": "https://s3.amazonaws.com/amplify-recipeapp-staging-172953-deployment/amplify-cfn-templates/api/recipeRESTAPI-cloudformation-template.json",
+        "logicalId": "apirecipeRESTAPI"
+      },
+      "lastPushTimeStamp": "2024-02-09T19:49:06.147Z",
+      "output": {
+        "ApiName": "recipeRESTAPI",
+        "RootUrl": "https://wm9xw5pb48.execute-api.us-east-1.amazonaws.com/staging",
+        "ApiId": "wm9xw5pb48"
+      },
+      "lastPushDirHash": "SorUXHlOoFpwxgbs6Pk3A5yPFt0="
+    }
+  },
+  "storage": {
+    "recipeImages": {
+      "service": "S3",
+      "providerPlugin": "awscloudformation",
+      "dependsOn": [],
+      "lastPushTimeStamp": "2024-02-09T19:49:01.369Z",
+      "providerMetadata": {
+        "s3TemplateURL": "https://s3.amazonaws.com/amplify-recipeapp-staging-172953-deployment/amplify-cfn-templates/storage/cloudformation-template.json",
+        "logicalId": "storagerecipeImages"
+      },
+      "output": {
+        "BucketName": "recipeimages172953-staging",
+        "Region": "us-east-1"
+      },
+      "lastPushDirHash": "kTZ22RkLqh+8om/XdmxKygftoiE="
+    }
+  },
+  "function": {
+    "recipelambda": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda",
+      "lastBuildTimeStamp": "2024-02-09T19:46:40.766Z",
+      "lastBuildType": "PROD",
+      "lastPackageTimeStamp": "2024-02-09T19:46:40.818Z",
+      "distZipFilename": "recipelambda-4f7466536743394a4c35-build.zip",
+      "s3Bucket": {
+        "deploymentBucketName": "amplify-recipeapp-staging-172953-deployment",
+        "s3Key": "amplify-builds/recipelambda-4f7466536743394a4c35-build.zip"
+      },
+      "providerMetadata": {
+        "s3TemplateURL": "https://s3.amazonaws.com/amplify-recipeapp-staging-172953-deployment/amplify-cfn-templates/function/recipelambda-cloudformation-template.json",
+        "logicalId": "functionrecipelambda"
+      },
+      "lastPushTimeStamp": "2024-02-09T19:49:06.147Z",
+      "output": {
+        "LambdaExecutionRoleArn": "arn:aws:iam::982120985546:role/recipeappLambdaRolef0fb1ddb-staging",
+        "Region": "us-east-1",
+        "Arn": "arn:aws:lambda:us-east-1:982120985546:function:recipelambda-staging",
+        "Name": "recipelambda-staging",
+        "LambdaExecutionRole": "recipeappLambdaRolef0fb1ddb-staging"
+      },
+      "lastPushDirHash": "QWZRQVppPpO/g1nOguiG3y4zbG4="
+    }
+  }
+}

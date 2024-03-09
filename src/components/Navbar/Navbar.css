@@ -1,0 +1,8 @@
+/* global.css */
+body,
+html,
+#root,
+.MuiContainer-root,
+.MuiContainer-maxWidthXl {
+  margin: 0;
+}

@@ -1,0 +1,33 @@
+{
+  "staging": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-recipeapp-staging-172953-authRole",
+      "UnauthRoleArn": "arn:aws:iam::982120985546:role/amplify-recipeapp-staging-172953-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::982120985546:role/amplify-recipeapp-staging-172953-authRole",
+      "Region": "us-east-1",
+      "DeploymentBucketName": "amplify-recipeapp-staging-172953-deployment",
+      "UnauthRoleName": "amplify-recipeapp-staging-172953-unauthRole",
+      "StackName": "amplify-recipeapp-staging-172953",
+      "StackId": "arn:aws:cloudformation:us-east-1:982120985546:stack/amplify-recipeapp-staging-172953/ad0ac4e0-c1f0-11ee-9500-0a598cdf7063",
+      "AmplifyAppId": "d2brvp81eu4bp"
+    },
+    "categories": {
+      "auth": {
+        "recipeapp": {}
+      },
+      "api": {
+        "recipeAPI": {},
+        "recipeRESTAPI": {}
+      },
+      "storage": {
+        "recipeImages": {}
+      },
+      "function": {
+        "recipelambda": {
+          "deploymentBucketName": "amplify-recipeapp-staging-172953-deployment",
+          "s3Key": "amplify-builds/recipelambda-4f7466536743394a4c35-build.zip"
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,72 @@
+{
+  "identityPoolName": "testAuthIdentityPool",
+  "allowUnauthenticatedIdentities": true,
+  "resourceNameTruncated": "recipe6dfb732a",
+  "userPoolName": "recipeapp",
+  "autoVerifiedAttributes": [
+    "email"
+  ],
+  "mfaConfiguration": "OFF",
+  "mfaTypes": [
+    "SMS Text Message"
+  ],
+  "smsAuthenticationMessage": "Your authentication code is {####}",
+  "smsVerificationMessage": "Your verification code is {####}",
+  "emailVerificationSubject": "Verification code: {####}",
+  "emailVerificationMessage": "Verification code: {####}",
+  "defaultPasswordPolicy": false,
+  "passwordPolicyMinLength": 8,
+  "passwordPolicyCharacters": [
+    "Requires Lowercase",
+    "Requires Numbers",
+    "Requires Symbols",
+    "Requires Uppercase"
+  ],
+  "requiredAttributes": [
+    "email",
+    "picture"
+  ],
+  "aliasAttributes": [],
+  "userpoolClientGenerateSecret": false,
+  "userpoolClientRefreshTokenValidity": 30,
+  "userpoolClientWriteAttributes": [],
+  "userpoolClientReadAttributes": [],
+  "userpoolClientLambdaRole": "recipe6dfb732a_userpoolclient_lambda_role",
+  "userpoolClientSetAttributes": false,
+  "sharedId": "6dfb732a",
+  "resourceName": "recipeapp",
+  "authSelections": "identityPoolAndUserPool",
+  "serviceName": "Cognito",
+  "usernameAttributes": [
+    "email"
+  ],
+  "useDefault": "manual",
+  "userPoolGroups": false,
+  "userPoolGroupList": [],
+  "adminQueries": false,
+  "thirdPartyAuth": false,
+  "authProviders": [],
+  "hostedUI": true,
+  "hostedUIDomainName": "lil1ihd7fees",
+  "authProvidersUserPool": [
+    "Google"
+  ],
+  "hostedUIProviderMeta": "[{\"ProviderName\":\"Google\",\"authorize_scopes\":\"openid email profile\",\"AttributeMapping\":{\"email\":\"email\",\"picture\":\"picture\",\"username\":\"sub\"}}]",
+  "oAuthMetadata": "{\"AllowedOAuthFlows\":[\"code\"],\"AllowedOAuthScopes\":[\"phone\",\"email\",\"openid\",\"profile\",\"aws.cognito.signin.user.admin\"],\"CallbackURLs\":[\"http://localhost:5173/\"],\"LogoutURLs\":[\"http://localhost:5173/\"]}",
+  "usernameCaseSensitive": false,
+  "useEnabledMfas": true,
+  "authRoleArn": {
+    "Fn::GetAtt": [
+      "AuthRole",
+      "Arn"
+    ]
+  },
+  "unauthRoleArn": {
+    "Fn::GetAtt": [
+      "UnauthRole",
+      "Arn"
+    ]
+  },
+  "breakCircularDependency": true,
+  "dependsOn": []
+}

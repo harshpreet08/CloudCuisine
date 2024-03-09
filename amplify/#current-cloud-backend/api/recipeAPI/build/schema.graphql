@@ -1,0 +1,249 @@
+type Recipe {
+  recipeId: ID
+  title: String
+  ingredients: String
+  instructions: String
+  image: String
+  spiceTag: String
+  foodPreferenceTag: String
+  id: ID!
+  createdAt: AWSDateTime!
+  updatedAt: AWSDateTime!
+  owner: String
+}
+
+input ModelStringInput {
+  ne: String
+  eq: String
+  le: String
+  lt: String
+  ge: String
+  gt: String
+  contains: String
+  notContains: String
+  between: [String]
+  beginsWith: String
+  attributeExists: Boolean
+  attributeType: ModelAttributeTypes
+  size: ModelSizeInput
+}
+
+input ModelIntInput {
+  ne: Int
+  eq: Int
+  le: Int
+  lt: Int
+  ge: Int
+  gt: Int
+  between: [Int]
+  attributeExists: Boolean
+  attributeType: ModelAttributeTypes
+}
+
+input ModelFloatInput {
+  ne: Float
+  eq: Float
+  le: Float
+  lt: Float
+  ge: Float
+  gt: Float
+  between: [Float]
+  attributeExists: Boolean
+  attributeType: ModelAttributeTypes
+}
+
+input ModelBooleanInput {
+  ne: Boolean
+  eq: Boolean
+  attributeExists: Boolean
+  attributeType: ModelAttributeTypes
+}
+
+input ModelIDInput {
+  ne: ID
+  eq: ID
+  le: ID
+  lt: ID
+  ge: ID
+  gt: ID
+  contains: ID
+  notContains: ID
+  between: [ID]
+  beginsWith: ID
+  attributeExists: Boolean
+  attributeType: ModelAttributeTypes
+  size: ModelSizeInput
+}
+
+input ModelSubscriptionStringInput {
+  ne: String
+  eq: String
+  le: String
+  lt: String
+  ge: String
+  gt: String
+  contains: String
+  notContains: String
+  between: [String]
+  beginsWith: String
+  in: [String]
+  notIn: [String]
+}
+
+input ModelSubscriptionIntInput {
+  ne: Int
+  eq: Int
+  le: Int
+  lt: Int
+  ge: Int
+  gt: Int
+  between: [Int]
+  in: [Int]
+  notIn: [Int]
+}
+
+input ModelSubscriptionFloatInput {
+  ne: Float
+  eq: Float
+  le: Float
+  lt: Float
+  ge: Float
+  gt: Float
+  between: [Float]
+  in: [Float]
+  notIn: [Float]
+}
+
+input ModelSubscriptionBooleanInput {
+  ne: Boolean
+  eq: Boolean
+}
+
+input ModelSubscriptionIDInput {
+  ne: ID
+  eq: ID
+  le: ID
+  lt: ID
+  ge: ID
+  gt: ID
+  contains: ID
+  notContains: ID
+  between: [ID]
+  beginsWith: ID
+  in: [ID]
+  notIn: [ID]
+}
+
+enum ModelAttributeTypes {
+  binary
+  binarySet
+  bool
+  list
+  map
+  number
+  numberSet
+  string
+  stringSet
+  _null
+}
+
+input ModelSizeInput {
+  ne: Int
+  eq: Int
+  le: Int
+  lt: Int
+  ge: Int
+  gt: Int
+  between: [Int]
+}
+
+enum ModelSortDirection {
+  ASC
+  DESC
+}
+
+type ModelRecipeConnection {
+  items: [Recipe]!
+  nextToken: String
+}
+
+input ModelRecipeFilterInput {
+  recipeId: ModelIDInput
+  title: ModelStringInput
+  ingredients: ModelStringInput
+  instructions: ModelStringInput
+  image: ModelStringInput
+  spiceTag: ModelStringInput
+  foodPreferenceTag: ModelStringInput
+  and: [ModelRecipeFilterInput]
+  or: [ModelRecipeFilterInput]
+  not: ModelRecipeFilterInput
+}
+
+type Query {
+  getRecipe(id: ID!): Recipe
+  listRecipes(filter: ModelRecipeFilterInput, limit: Int, nextToken: String): ModelRecipeConnection
+}
+
+input ModelRecipeConditionInput {
+  recipeId: ModelIDInput
+  title: ModelStringInput
+  ingredients: ModelStringInput
+  instructions: ModelStringInput
+  image: ModelStringInput
+  spiceTag: ModelStringInput
+  foodPreferenceTag: ModelStringInput
+  and: [ModelRecipeConditionInput]
+  or: [ModelRecipeConditionInput]
+  not: ModelRecipeConditionInput
+}
+
+input CreateRecipeInput {
+  recipeId: ID
+  title: String
+  ingredients: String
+  instructions: String
+  image: String
+  spiceTag: String
+  foodPreferenceTag: String
+  id: ID
+}
+
+input UpdateRecipeInput {
+  recipeId: ID
+  title: String
+  ingredients: String
+  instructions: String
+  image: String
+  spiceTag: String
+  foodPreferenceTag: String
+  id: ID!
+}
+
+input DeleteRecipeInput {
+  id: ID!
+}
+
+type Mutation {
+  createRecipe(input: CreateRecipeInput!, condition: ModelRecipeConditionInput): Recipe
+  updateRecipe(input: UpdateRecipeInput!, condition: ModelRecipeConditionInput): Recipe
+  deleteRecipe(input: DeleteRecipeInput!, condition: ModelRecipeConditionInput): Recipe
+}
+
+input ModelSubscriptionRecipeFilterInput {
+  recipeId: ModelSubscriptionIDInput
+  title: ModelSubscriptionStringInput
+  ingredients: ModelSubscriptionStringInput
+  instructions: ModelSubscriptionStringInput
+  image: ModelSubscriptionStringInput
+  spiceTag: ModelSubscriptionStringInput
+  foodPreferenceTag: ModelSubscriptionStringInput
+  and: [ModelSubscriptionRecipeFilterInput]
+  or: [ModelSubscriptionRecipeFilterInput]
+}
+
+type Subscription {
+  onCreateRecipe(filter: ModelSubscriptionRecipeFilterInput, owner: String): Recipe @aws_subscribe(mutations: ["createRecipe"])
+  onUpdateRecipe(filter: ModelSubscriptionRecipeFilterInput, owner: String): Recipe @aws_subscribe(mutations: ["updateRecipe"])
+  onDeleteRecipe(filter: ModelSubscriptionRecipeFilterInput, owner: String): Recipe @aws_subscribe(mutations: ["deleteRecipe"])
+}
