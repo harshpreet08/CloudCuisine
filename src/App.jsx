@@ -25,6 +25,8 @@ function App() {
               <Route exact path="/" element={<ListRecipe />} />
               <Route exact path="/newrecipe" element={<RecipeForm />} />
               <Route exact path="/editrecipe" element={<EditRecipe />} />{" "}
+              <Route exact path="/recipe/:id" element={<RecipeDetails />} />{" "}
+              {/* Add this route */}
             </Routes>
           </div>
         </Router>

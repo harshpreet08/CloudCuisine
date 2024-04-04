@@ -17,6 +17,7 @@ import ShareIcon from "@mui/icons-material/Share";
 import SendIcon from "@mui/icons-material/Send";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
+import CheckCircleIcon from "@mui/icons-material/CheckCircle"; // New icon for success indicator
 import { generateClient } from "aws-amplify/api";
 import * as queries from "../../graphql/queries";
 import * as mutations from "../../graphql/mutations";
@@ -29,7 +30,8 @@ function ListRecipe() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [email, setEmail] = useState("");
   const [selectedRecipe, setSelectedRecipe] = useState(null);
-  const [loading, setLoading] = useState(true); // Add loading state
+  const [loading, setLoading] = useState(true);
+  const [success, setSuccess] = useState(false); // State to manage success indicator
   const client = generateClient();
   const navigate = useNavigate();
 
@@ -40,8 +42,8 @@ function ListRecipe() {
       });
       const result = recipeList.data;
       console.log("list of recipes: ", result);
-      setRecipes(result.listRecipes.items); // Update the state with fetched recipes
-      setLoading(false); // Set loading to false after fetching
+      setRecipes(result.listRecipes.items);
+      setLoading(false);
     } catch (error) {
       console.log("error: ", error);
     }
@@ -51,11 +53,13 @@ function ListRecipe() {
     getRecipes();
   }, []);
 
-  const handleEditRecipe = (recipe) => {
+  const handleEditRecipe = (recipe, event) => {
+    event.stopPropagation();
     navigate("/editrecipe", { state: { recipe } });
   };
 
-  const confirmDeleteRecipe = async (recipeId) => {
+  const confirmDeleteRecipe = async (recipeId, event) => {
+    event.stopPropagation(); // Prevent card click event from being triggered
     try {
       await client.graphql({
         query: mutations.deleteRecipe,
@@ -69,7 +73,8 @@ function ListRecipe() {
     }
   };
 
-  const openModal = (recipe) => {
+  const openModal = (recipe, event) => {
+    event.stopPropagation(); // Prevent card click event from being triggered
     setSelectedRecipe(recipe);
     setIsModalOpen(true);
   };
@@ -89,7 +94,7 @@ function ListRecipe() {
         recipe: recipe,
       };
       console.log("Sending email to:", email);
-      const response = await post({
+      await post({
         mode: "no-cors",
         apiName: "recipeRESTAPI",
         path: "/sendmyrecipe",
@@ -97,7 +102,11 @@ function ListRecipe() {
           body: data,
         },
       });
-      console.log("api cal succeessss: ", response);
+      setSuccess(true); // Set success state to true
+      setTimeout(() => {
+        setSuccess(false); // Reset success state after a delay
+        closeModal(); // Close modal after a delay
+      }, 2000); // Adjust delay time as needed
     } catch (err) {
       console.log("err:: ", err);
     }
@@ -120,7 +129,7 @@ function ListRecipe() {
       >
         Recipes
       </Typography>
-      {loading ? ( // Display loading icon if loading is true
+      {loading ? (
         <Box sx={{ display: "flex", justifyContent: "center" }}>
           <CircularProgress />
         </Box>
@@ -141,6 +150,7 @@ function ListRecipe() {
                     transform: "scale(1.05)",
                   },
                 }}
+                onClick={() => navigate(`/recipe/${recipe.id}`)} // Navigate to recipe details page
               >
                 <CardMedia
                   component="img"
@@ -178,13 +188,17 @@ function ListRecipe() {
                   </Typography>
                 </CardContent>
                 <CardActions>
-                  <IconButton onClick={() => handleEditRecipe(recipe)}>
+                  <IconButton
+                    onClick={(event) => handleEditRecipe(recipe, event)}
+                  >
                     <EditIcon color="primary" />
                   </IconButton>
-                  <IconButton onClick={() => openModal(recipe)}>
+                  <IconButton onClick={(event) => openModal(recipe, event)}>
                     <ShareIcon color="action" />
                   </IconButton>
-                  <IconButton onClick={() => confirmDeleteRecipe(recipe.id)}>
+                  <IconButton
+                    onClick={(event) => confirmDeleteRecipe(recipe.id, event)}
+                  >
                     <DeleteIcon color="error" />
                   </IconButton>
                 </CardActions>
@@ -205,23 +219,48 @@ function ListRecipe() {
             top: "50%",
             left: "50%",
             transform: "translate(-50%, -50%)",
-            width: 400,
+            maxWidth: 400,
+            width: "100%",
             bgcolor: "background.paper",
             boxShadow: 24,
+            borderRadius: 4,
             p: 4,
           }}
         >
+          <Typography variant="h4" gutterBottom>
+            Share Recipe
+          </Typography>
           <TextField
             label="Email Address"
             variant="outlined"
             value={email}
             onChange={handleEmailChange}
             fullWidth
-            mb={2}
+            mb={2} // Add vertical margin here
           />
-          <IconButton onClick={() => handleSend(selectedRecipe)}>
-            <SendIcon />
-          </IconButton>
+          {/* Add vertical space here */}
+          <Box mb={2}></Box>
+          {/* Add vertical space here */}
+          <Box textAlign="right">
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={() => handleSend(selectedRecipe)}
+            >
+              Send
+            </Button>
+          </Box>
+          {success && ( // Display success indicator if success state is true
+            <Box
+              sx={{
+                display: "flex",
+                justifyContent: "center",
+                marginTop: "20px",
+              }}
+            >
+              <CheckCircleIcon color="success" sx={{ fontSize: 40 }} />
+            </Box>
+          )}
         </Box>
       </Modal>
       <Box

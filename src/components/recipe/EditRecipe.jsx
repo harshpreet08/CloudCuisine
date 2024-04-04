@@ -8,6 +8,7 @@ import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 import CloseIcon from "@mui/icons-material/Close";
 import { styled } from "@mui/material/styles";
 import { uploadData } from "aws-amplify/storage";
+import { useNavigate } from "react-router-dom";
 
 const VisuallyHiddenInput = styled("input")({
   clip: "rect(0 0 0 0)",
@@ -30,6 +31,7 @@ function EditRecipeForm({ image: initialImage }) {
   const [error, setError] = useState(false);
   const [image, setImage] = useState(initialImage);
   const client = generateClient();
+  const navigate = useNavigate();
 
   const imageUpload = (event) => {
     const file = event.target.files[0];
@@ -71,7 +73,11 @@ function EditRecipeForm({ image: initialImage }) {
 
   const handleSubmit = async () => {
     try {
-      const img = image ? await uploadImage(image) : null;
+      let img = recipe.image; // Use existing image if no new image is uploaded
+
+      if (image) {
+        img = await uploadImage(image);
+      }
 
       if (!recipeTitle || !recipeIngredients || !recipeInstructions) {
         setError(true);
@@ -97,6 +103,7 @@ function EditRecipeForm({ image: initialImage }) {
     } catch (error) {
       console.error("Error updating recipe:", error);
     }
+    navigate("/");
   };
 
   useEffect(() => {
@@ -165,33 +172,6 @@ function EditRecipeForm({ image: initialImage }) {
                 <FormHelperText error>Please enter instructions</FormHelperText>
               )}
             </div>
-            {/* <div className="form-group">
-              {recipe.image && (
-                <div className="image-upload-preview">
-                  <span>{recipe.image}</span>
-                  <Button onClick={removeImage}>
-                    <CloseIcon />
-                  </Button>
-                </div>
-              )}
-              <label htmlFor="recipeImage">
-                <Button
-                  component="span"
-                  variant="outlined"
-                  startIcon={<CloudUploadIcon />}
-                >
-                  Upload Image
-                </Button>
-              </label>
-              <input
-                id="recipeImage"
-                type="file"
-                accept="image/*"
-                onChange={imageUpload}
-                style={{ display: "none" }}
-              />
-            </div> */}
-
             <div className="form-group">
               {/* Image Input */}
               {recipe.image && (
