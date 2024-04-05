@@ -16,7 +16,18 @@ Amplify.configure(awsconfig);
 
 function App() {
   return (
-    <Authenticator variation="modal" socialProviders={["google"]}>
+    <Authenticator
+      variation="modal"
+      socialProviders={["google"]}
+      formFields={{
+        signUp: {
+          picture: {
+            defaultValue: "",
+            placeholder: "Picture",
+          },
+        },
+      }}
+    >
       {({ signOut, user }) => (
         <Router>
           <div className="App">
