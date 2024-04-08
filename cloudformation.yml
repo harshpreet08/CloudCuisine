@@ -1,0 +1,75 @@
+Parameters:
+  SSHLocation:
+    Default: 0.0.0.0/0
+    Type: String
+
+Resources:
+  MySecurityGroupForDemo:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: Allow traffic to port 5173
+      SecurityGroupIngress:
+        - IpProtocol: tcp
+          FromPort: 80
+          ToPort: 5173
+          CidrIp: 0.0.0.0/0
+        - CidrIp: !Sub ${SSHLocation}
+          FromPort: "22"
+          IpProtocol: tcp
+          ToPort: "22"
+        - IpProtocol: tcp
+          FromPort: "443"
+          ToPort: "443"
+          CidrIp: 0.0.0.0/0
+
+  LoadBalancerSecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: ELB Security Group
+      SecurityGroupIngress:
+        - IpProtocol: tcp
+          FromPort: 80
+          ToPort: 80
+          CidrIp: 0.0.0.0/0
+
+  CloudCuisineEC2Instance:
+    Type: "AWS::EC2::Instance"
+    Properties:
+      InstanceType: t2.large
+      ImageId: ami-051f8a213df8bc089
+      KeyName: CloudCuisineEC2
+      SecurityGroupIds:
+        - !Ref MySecurityGroupForDemo
+      UserData:
+        Fn::Base64: !Sub |
+          #!/bin/bash
+          sudo yum update -y
+          sudo yum install -y npm
+          sudo npm install -g @aws-amplify/cli
+          sudo yum install -y docker
+          sudo systemctl start docker
+          sudo docker pull harshiscool08/cloudkitchen
+          sudo docker run -p 80:5173 harshiscool08/cloudkitchen
+      Tags:
+        - Key: Name
+          Value: CloudCuisineEC2
+
+  CloudCuisineLoadBalancer:
+    Type: AWS::ElasticLoadBalancing::LoadBalancer
+    Properties:
+      AvailabilityZones:
+        [us-east-1a, us-east-1b, us-east-1c, us-east-1e, us-east-1d]
+      SecurityGroups: [!GetAtt LoadBalancerSecurityGroup.GroupId]
+      LoadBalancerName: CloudCuisineLoadBalancer
+      Instances:
+        - !Ref CloudCuisineEC2Instance
+      Listeners:
+        - LoadBalancerPort: "80"
+          InstancePort: "80"
+          Protocol: HTTP
+      HealthCheck:
+        Target: HTTP:80/
+        HealthyThreshold: "3"
+        UnhealthyThreshold: "5"
+        Interval: "30"
+        Timeout: "10"
